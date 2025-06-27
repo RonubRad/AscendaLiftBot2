@@ -68,12 +68,18 @@ async function handleEvent(event) {
     ]);
   }
 
-  // Business hours → hand to human
-  if (isWorkingHours()) {
-    return client.replyMessage(event.replyToken, {
-      type: 'text',
-      text: 'ตอนนี้เป็นเวลาทำการ พนักงาน Ascenda จะตอบกลับคุณโดยตรงในไม่ช้า ขอบคุณค่ะ'
-    });
+ // 1) Do **nothing** during business hours – let humans handle it
+if (isWorkingHours()) {
+  console.log('Human-hours → bot silent');
+  return;          // <-- early exit, no auto-reply
+}
+
+// 2) Outside hours → send the friendly auto-message
+return client.replyMessage(event.replyToken, {
+  type: 'text',
+  text: 'ขอบคุณที่ติดต่อ Ascenda Lift! ทีมงานออนไลน์ 09:00-18:00 น. จันทร์-เสาร์ เราจะตอบกลับโดยเร็วที่สุดนะคะ 🙏'
+});
+
   }
 
   // GPT fallback
