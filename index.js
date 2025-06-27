@@ -75,14 +75,13 @@ if (isWorkingHours()) {
 }
 
 // 2) Outside hours → send the friendly auto-message
-return client.replyMessage(event.replyToken, {
-  type: 'text',
-  text: 'ขอบคุณที่ติดต่อ Ascenda Lift! ทีมงานออนไลน์ 09:00-18:00 น. จันทร์-เสาร์ เราจะตอบกลับโดยเร็วที่สุดนะคะ 🙏'
-});
+return handleReply(event, userText);
+
 
   }
 
-  // GPT fallback
+ // GPT fallback
+async function handleReply(event, userText) {
   const gpt = await openai.chat.completions.create({
     model: 'gpt-4o',
     messages: [
